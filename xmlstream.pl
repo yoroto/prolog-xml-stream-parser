@@ -75,25 +75,35 @@ parse_token(tag(Codes), Thing) :-
         p_tag(Thing, Codes, []).
 
 p_tag(cdata(CData)) -->
-        "<![CDATA[", chars(CData), "]]>".
+        "<![CDATA[", p_chars(CData), "]]>".
 
 p_tag(comment(Comment)) -->
-        "<!--", chars(Comment), "-->".
+        "<!--", p_chars(Comment), "-->".
 
 p_tag(instructions(Instructions)) -->
-        "<?", chars(Instructions),"?>".
+        "<?", p_chars(Instructions),"?>".
 
 p_tag(doctype(DocType)) -->
-        "<!DOCTYPE ", chars(DocType), ">".
+        "<!DOCTYPE ", p_chars(DocType), ">".
 
 p_tag(end(Name)) -->
-        "</", chars(Name), ">".
+        "</", p_name(Name), ">".
 
 p_tag(singleton(Name)) -->
-        "<", chars(Name), "/>".
+        "<", p_name(Name), "/>".
 
-p_tag(start(Name, [])) -->
-        "<", chars(Name), ">".
+p_tag(start(Name, Attributes)) -->
+        "<", p_name(Name), p_attributes(Attributes), ">".
 
-chars( Chars, Plus, Minus ) :-
+p_attributes([]) --> [].
+
+p_attributes([Name=Value|Attributes]) -->
+        " ", p_name(Name), "=""", p_chars(Value),"""",
+        p_attributes(Attributes).
+
+p_chars( Chars, Plus, Minus ) :-
         append( Chars, Minus, Plus ).
+
+p_name( Name, Plus, Minus ) :-
+        append( Chars, Minus, Plus ),
+        atom_codes( Name, Chars ).
