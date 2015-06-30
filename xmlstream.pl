@@ -6,7 +6,7 @@
         next_start_or_singleton_before_end_of/3,
         next_singleton_before_end_of/3,
         next_text_element_before_end_of/3,
-        next_end/1,
+        next_end_of/1,
         next/1
         ]).
 
@@ -103,10 +103,10 @@ next_text_element_before_end_of(Name, EndName, Element) :-
                 next_text_element_before_end_of(Name, EndName, Element)
         ).
 
-next_end(Name) :-
+next_end_of(Name) :-
         next(Tag), !,
         (Tag = end(Name)
-        ;next_end(Name)
+        ;next_end_of(Name)
         ).
 
 get_element_content(Name, Content) :-
