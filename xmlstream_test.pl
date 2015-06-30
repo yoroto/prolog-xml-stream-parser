@@ -9,9 +9,7 @@ test1(FileName) :-
         close(FD).
 
 print_token :-
-        (has_next
-        ->
-                next(Token),
+        (next(Token) ->
                 print(Token),nl,
                 print_token
         ;
