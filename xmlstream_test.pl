@@ -25,5 +25,5 @@ test_sbeo_inner([]).
 
 test_sbeo_inner([(Start, End)|T]) :-
     next_start_before_end_of(Start, End, start(Start, Properties)),
-    print(start(Start, Properties)),
+    print(start(Start, Properties)), nl,
     test_sbeo_inner(T). 
